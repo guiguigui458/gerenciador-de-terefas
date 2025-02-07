@@ -1,4 +1,4 @@
-import "../globals.css"; // Certifique-se de que o caminho está correto
+import "../app/globals.css"; // Garante que o Tailwind funcione
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -6,9 +6,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <title>Task Manager</title>
       </head>
-      <body className="bg-gray-200 text-gray-900 min-h-screen flex justify-center items-center">
+      <body className="bg-gray-100 text-gray-900 min-h-screen flex justify-center items-center">
         <main className="w-full max-w-6xl p-6">{children}</main>
       </body>
     </html>
   );
 }
+

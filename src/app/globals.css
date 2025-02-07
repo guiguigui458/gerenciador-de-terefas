@@ -3,7 +3,36 @@
 @tailwind utilities;
 
 body {
-  background-color: #f3f4f6; /* Cinza claro */
-  color: #1f2937; /* Cinza escuro */
-  font-family: 'Inter', sans-serif;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  font-family: "Inter", sans-serif;
 }
+
+.task-board {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.task-column {
+  flex: 1;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  min-height: 300px;
+}
+
+.task {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  cursor: grab;
+}
+
+.task:hover {
+  transform: scale(1.02);
+}
+
