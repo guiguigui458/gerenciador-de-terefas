@@ -1,44 +1,58 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
 import { Trash } from "lucide-react";
 
 export default function TaskCard({ task, updateTask, deleteTask }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: task.id });
+  // Estados para armazenar o título, observações e status da tarefa
+  const [title, setTitle] = useState(task.title);
+  const [observations, setObservations] = useState(task.observations || "");
+  const [status, setStatus] = useState(task.status);
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+  // Atualiza a tarefa ao sair do campo ou ao mudar o status
+  const handleUpdate = () => {
+    updateTask(task.id, status, title, observations);
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="bg-white p-4 rounded shadow mb-2 cursor-grab">
-      {/* Campo do título da tarefa */}
+    <div className="bg-white p-4 rounded-md shadow-md mb-2">
+      {/* Campo de edição do título */}
       <input
         type="text"
-        value={task.title || ""}
-        onChange={(e) => updateTask(task.id, "title", e.target.value)}
-        className="w-full p-1 text-lg font-semibold bg-transparent border-b border-gray-300 focus:outline-none"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onBlur={handleUpdate}
+        className="w-full font-bold text-lg p-2 border rounded-md focus:ring"
       />
+
+      {/* Seletor de status */}
+      <select
+        value={status}
+        onChange={(e) => {
+          setStatus(e.target.value);
+          updateTask(task.id, e.target.value, title, observations);
+        }}
+        className="w-full mt-2 p-2 border rounded-md focus:ring"
+      >
+        <option value="A Fazer">📝 A Fazer</option>
+        <option value="Em Progresso">⏳ Em Progresso</option>
+        <option value="Concluído">✅ Concluído</option>
+      </select>
 
       {/* Campo de observação */}
       <textarea
-        value={task.observations || ""}
-        onChange={(e) => updateTask(task.id, "observations", e.target.value)}
-        className="w-full p-1 mt-2 text-sm bg-gray-100 border border-gray-300 rounded focus:outline-none"
+        value={observations}
+        onChange={(e) => setObservations(e.target.value)}
+        onBlur={handleUpdate}
         placeholder="Adicione observações..."
-      />
+        className="w-full mt-2 p-2 border rounded-md focus:ring"
+      ></textarea>
 
-      {/* Campo de data */}
-      <input
-        type="date"
-        value={task.deadline || ""}
-        onChange={(e) => updateTask(task.id, "deadline", e.target.value)}
-        className="w-full p-1 mt-2 text-sm bg-gray-100 border border-gray-300 rounded focus:outline-none"
-      />
-
-      {/* Botão de deletar */}
-      <button onClick={() => deleteTask(task.id)} className="text-red-500 mt-2 float-right">
-        <Trash size={18} />
+      {/* Botão para excluir */}
+      <button
+        onClick={() => deleteTask(task.id)}
+        className="mt-2 text-red-500 hover:text-red-700 flex items-center"
+      >
+        <Trash className="w-5 h-5 mr-1" />
+        Excluir
       </button>
     </div>
   );
